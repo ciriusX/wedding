@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обратный отсчет до 01.08.2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+	<meta property="og:title" content="Go! I Win!">
+	<meta property="og:image" content="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1168&q=80">
+	<meta property="og:type" content="website">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .countdown-container {
+            text-align: center;
+            padding: 30px;
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        .header {
+            margin-bottom: 50px;
+        }
+        
+        .header h1 {
+            font-size: 2.8rem;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #f0f0f0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .header h2 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #aaa;
+            letter-spacing: 2px;
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 60px 0;
+        }
+        
+        .time-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .time-value {
+            font-size: 7rem;
+            font-weight: 700;
+            line-height: 1;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            min-width: 180px;
+        }
+        
+        .time-label {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-top: 15px;
+            color: #bbb;
+        }
+        
+        .colon {
+            font-size: 5rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+            min-width: 30px;
+            opacity: 0.7;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin: 50px auto;
+            position: relative;
+            max-width: 800px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1a1a1a, #fff);
+            width: 0%;
+            transition: width 1s linear;
+        }
+        
+        .date-display {
+            font-size: 1.8rem;
+            letter-spacing: 3px;
+            margin-top: 40px;
+            color: #aaa;
+            font-weight: 300;
+        }
+        
+        .glowing-text {
+            color: #fff;
+            font-weight: 700;
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+        }
+        
+        /* Анимация пульсации для цифр */
+        @keyframes pulse {
+            0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5); }
+            100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+        }
+        
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+        
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        @media (max-width: 900px) {
+            .time-value {
+                font-size: 5rem;
+                min-width: 120px;
+                height: 90px;
+            }
+            
+            .colon {
+                font-size: 3.5rem;
+                height: 90px;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .header h2 {
+                font-size: 1.4rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .countdown {
+                gap: 15px;
+            }
+            
+            .time-value {
+                font-size: 3.5rem;
+                min-width: 80px;
+                height: 70px;
+            }
+            
+            .colon {
+                font-size: 2.5rem;
+                height: 70px;
+                min-width: 10px;
+            }
+            
+            .time-label {
+                font-size: 0.9rem;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .header h2 {
+                font-size: 1.2rem;
+            }
+            
+            .date-display {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-overlay"></div>
+    <div class="particles" id="particles"></div>
+    
+    <div class="countdown-container">
+        <div class="header">
+            <h1>Обратный отсчет</h1>
+            <h2>до 1 августа 2025 года</h2>
+        </div>
+        
+        <div class="countdown">
+            <div class="time-section">
+                <div class="time-value" id="days">00</div>
+                <div class="time-label">Дней</div>
+            </div>
+            
+            <div class="colon">:</div>
+            
+            <div class="time-section">
+                <div class="time-value" id="hours">00</div>
+                <div class="time-label">Часов</div>
+            </div>
+            
+            <div class="colon">:</div>
+            
+            <div class="time-section">
+                <div class="time-value" id="minutes">00</div>
+                <div class="time-label">Минут</div>
+            </div>
+            
+            <div class="colon">:</div>
+            
+            <div class="time-section">
+                <div class="time-value" id="seconds">00</div>
+                <div class="time-label">Секунд</div>
+            </div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+        
+        <div class="date-display">
+            Текущая дата: <span id="current-date" class="glowing-text">--.--.----</span>
+        </div>
+    </div>
+
+    <script>
+        // Создаем частицы для фона
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 100;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Случайный размер
+                const size = Math.random() * 3 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Случайная позиция
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Анимация
+                particle.style.animation = `moveParticle ${Math.random() * 30 + 20}s linear infinite`;
+                
+                // Добавляем стили анимации
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes moveParticle {
+                        0% { transform: translate(0, 0); opacity: 0; }
+                        10% { opacity: 0.4; }
+                        50% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px); opacity: 0.8; }
+                        90% { opacity: 0.4; }
+                        100% { transform: translate(0, 0); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Обновляем обратный отсчет
+        function updateCountdown() {
+            const targetDate = new Date('2025-08-01T00:00:00');
+            const now = new Date();
+            const diff = targetDate - now;
+            
+            if (diff <= 0) {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                
+                document.getElementById('days').classList.add('pulse');
+                document.getElementById('hours').classList.add('pulse');
+                document.getElementById('minutes').classList.add('pulse');
+                document.getElementById('seconds').classList.add('pulse');
+                
+                return;
+            }
+            
+            // Вычисляем временные единицы
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            // Обновляем значения
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            
+            // Обновляем прогресс бар
+            const totalSeconds = diff / 1000;
+            const maxSeconds = 365 * 24 * 60 * 60; // Примерно год в секундах
+            const progressPercent = 100 - (totalSeconds / maxSeconds * 100);
+            document.getElementById('progress').style.width = `${progressPercent}%`;
+            
+            // Обновляем текущую дату
+            const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            document.getElementById('current-date').textContent = 
+                now.toLocaleDateString('ru-RU', dateOptions);
+        }
+        
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        });
+    </script>
+</body>
+</html>
